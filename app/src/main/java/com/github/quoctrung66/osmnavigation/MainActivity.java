@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.github.quoctrung66.osmnavigation.Handler.HandleView;
+import com.github.quoctrung66.osmnavigation.Handler.ReadFileLocation;
 import com.github.quoctrung66.osmnavigation.Helper.Constant;
 import com.github.quoctrung66.osmnavigation.Service.LocationListenerService;
 import com.github.quoctrung66.osmnavigation.View.MapViewCustom;
@@ -27,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private Intent locationService;
     private ServiceConnection serviceConnection;
     private LocationListenerService locationListenerService;
+
+    //LocationFile
+    private ReadFileLocation readfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         bindService(new Intent(MainActivity.this, LocationListenerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+
+        ReadFileListener readFileListener = new ReadFileListener();
+        readfile = new ReadFileLocation(MainActivity.this, "TU HCMUT DEN IIG.txt");
+        readfile.addReadFileListener(readFileListener);
+        readfile.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private class LocationChanged implements LocationListenerService.LocationChanged {
@@ -75,6 +86,17 @@ public class MainActivity extends AppCompatActivity {
         public void onLocationChanged(Location location) {
             Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
         }
+    }
+
+    private class ReadFileListener implements ReadFileLocation.ReadFileListener {
+        @Override
+        public void onReadLine(Location location) {
+            Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
+        }
+    }
+
+    protected void onClickFab(View view){
+        readfile.toggle();
     }
 
     @Override
