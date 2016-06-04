@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
             drawerFile.updateLocation(geoPoint, 5f, 45f, new int[]{0, 0, 255});
+            ArrayList<GeoPoint> list_temp = new ArrayList<>();
+            list_temp.add(geoPoint);
+            list_temp.add(Constant.HCMUT);
+            drawPathGoal.updateDrawPath(list_temp, Color.RED, 7);
         }
     }
 

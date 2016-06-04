@@ -14,7 +14,7 @@ public class RequestHTTP {
     private static final String TAG = RequestHTTP.class.getSimpleName();
 
     public static String readUrl(String urlString) throws Exception {
-        Log.i(TAG, urlString);
+        Log.i(TAG + " URL", urlString);
         BufferedReader reader = null;
         try {
             URL url = new URL(urlString);
