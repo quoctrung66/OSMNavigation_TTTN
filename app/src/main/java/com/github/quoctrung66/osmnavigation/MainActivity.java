@@ -123,23 +123,6 @@ public class MainActivity extends AppCompatActivity {
             WayStreet wayStreetCurrent = streetNominatimParser.StreetIDParser(geoPoint.getLatitude(), geoPoint.getLongitude(), 16);
             Log.i(TAG + this.getClass().getSimpleName(), wayStreetCurrent.toString());
 
-            StreetDetailParser streetDetailParser = new StreetDetailParser();
-            WayStreet wayStreetDetail = streetDetailParser.StreetDetail(wayStreetCurrent.getId());
-            Log.i(TAG + this.getClass().getSimpleName(), wayStreetDetail.toString());
-
-            MapDataParser mapDataParser = new MapDataParser();
-            ArrayList<WayStreet> wayStreetArrayList = mapDataParser.ParserNode(geoPoint, 0.0001);
-            for (int i = 0; i < wayStreetArrayList.size(); i++){
-                Log.i(TAG + this.getClass().getSimpleName() + "OSM", wayStreetArrayList.get(i).toString());
-            }
-
-            OverPassBBoxParser overPassBBoxParser = new OverPassBBoxParser();
-            ArrayList<WayStreet> wayStreetArrayList1 = overPassBBoxParser.getOverpass_BBox(10, geoPoint);
-            for (int i = 0; i < wayStreetArrayList1.size(); i++){
-                Log.i(TAG + this.getClass().getSimpleName() + "OVP", wayStreetArrayList1.get(i).toString());
-            }
-
-
             Log.i(TAG + this.getClass().getSimpleName(), String.valueOf(System.currentTimeMillis() - time_start));
             Log.i(TAG + this.getClass().getSimpleName(), "-----------------------------------------------------");
         }
