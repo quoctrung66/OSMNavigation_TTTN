@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.github.quoctrung66.osmnavigation.Drawer.DrawIcon;
+import com.github.quoctrung66.osmnavigation.Drawer.DrawPath;
 import com.github.quoctrung66.osmnavigation.Handler.HandleView;
 import com.github.quoctrung66.osmnavigation.Handler.ReadFileLocation;
 import com.github.quoctrung66.osmnavigation.Helper.Constant;
@@ -21,6 +24,8 @@ import com.github.quoctrung66.osmnavigation.View.MapViewCustom;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     //TAG
@@ -33,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
     //LocationFile
     private ReadFileLocation readfile;
+
+    //Drawer locationGPS
+    DrawIcon drawerGPS;
+    DrawIcon drawerFile;
+    DrawPath drawPathGoal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +68,12 @@ public class MainActivity extends AppCompatActivity {
         mapController.setZoom(17);
         mapController.animateTo(Constant.HCMUT);
 
+        //Drawer
+        drawerGPS = new DrawIcon(MainActivity.this, mapView, null);
+        drawerFile = new DrawIcon(MainActivity.this, mapView, null);
+        drawPathGoal = new DrawPath(MainActivity.this, mapView);
 
+        //Location Service
         locationService = new Intent(MainActivity.this, LocationListenerService.class);
         startService(locationService);
         serviceConnection = new ServiceConnection() {
@@ -75,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         };
         bindService(new Intent(MainActivity.this, LocationListenerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
 
+        //Location File
         ReadFileListener readFileListener = new ReadFileListener();
         readfile = new ReadFileLocation(MainActivity.this, "TU HCMUT DEN IIG.txt");
         readfile.addReadFileListener(readFileListener);
@@ -85,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(Location location) {
             Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
+            GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+            drawerGPS.updateLocation(geoPoint, 5f, 45f, new int[]{255, 0, 0});
         }
     }
 
@@ -92,6 +110,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReadLine(Location location) {
             Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
+            GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+            drawerFile.updateLocation(geoPoint, 5f, 45f, new int[]{0, 0, 255});
+            ArrayList<GeoPoint> list_temp = new ArrayList<>();
+            list_temp.add(geoPoint);
+            list_temp.add(Constant.HCMUT);
+            drawPathGoal.updateDrawPath(list_temp, Color.RED, 7);
         }
     }
 
