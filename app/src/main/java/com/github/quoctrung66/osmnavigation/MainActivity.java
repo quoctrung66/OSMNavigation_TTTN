@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -17,6 +16,7 @@ import com.github.quoctrung66.osmnavigation.Drawer.DrawIcon;
 import com.github.quoctrung66.osmnavigation.Drawer.DrawPath;
 import com.github.quoctrung66.osmnavigation.Handler.HandleView;
 import com.github.quoctrung66.osmnavigation.Handler.NominatimAPI.StreetNominatimParser;
+import com.github.quoctrung66.osmnavigation.Handler.OpenstreetmapAPI.StreetDetailParser;
 import com.github.quoctrung66.osmnavigation.Handler.ReadFileLocation;
 import com.github.quoctrung66.osmnavigation.Helper.Constant;
 import com.github.quoctrung66.osmnavigation.Model.WayStreet;
@@ -27,7 +27,6 @@ import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     //TAG
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private class LocationChanged implements LocationListenerService.LocationChanged {
         @Override
         public void onLocationChanged(Location location) {
-            Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
+//            Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
             drawerGPS.updateLocation(geoPoint, 5f, 45f, new int[]{255, 0, 0});
         }
@@ -111,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     private class ReadFileListener implements ReadFileLocation.ReadFileListener {
         @Override
         public void onReadLine(Location location) {
+            long time_start = System.currentTimeMillis();
             Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
             drawerFile.updateLocation(geoPoint, 5f, 45f, new int[]{0, 0, 255});
@@ -119,7 +119,12 @@ public class MainActivity extends AppCompatActivity {
             WayStreet wayStreetCurrent = streetNominatimParser.StreetIDParser(geoPoint.getLatitude(), geoPoint.getLongitude(), 16);
             Log.i(TAG + this.getClass().getSimpleName(), wayStreetCurrent.toString());
 
+            StreetDetailParser streetDetailParser = new StreetDetailParser();
+            WayStreet wayStreetDetail = streetDetailParser.StreetDetail(wayStreetCurrent.getId());
+            Log.i(TAG + this.getClass().getSimpleName(), wayStreetDetail.toString());
 
+            Log.i(TAG + this.getClass().getSimpleName(), String.valueOf(System.currentTimeMillis() - time_start));
+            Log.i(TAG + this.getClass().getSimpleName(), "-----------------------------------------------------");
         }
     }
 
