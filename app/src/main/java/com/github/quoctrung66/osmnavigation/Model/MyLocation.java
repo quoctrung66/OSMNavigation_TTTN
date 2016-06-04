@@ -21,10 +21,10 @@ public class MyLocation {
     private WayStreet mWayStreet = null;
     private ArrayList<WayStreet> mWayStreet_stort = null;
 
-    private double mDistanceToPrevious = Constant.DEFAULT_VALUE;
+    private double mDistanceToPrevious = 0;
     private double mAngleVehicle = Constant.DEFAULT_VALUE;
 
-    private double mDistanceToGoal = Constant.DEFAULT_VALUE;
+    private double mDistanceToGoal = Constant.DEFAULT_VALUE_MAX;
     private double mAngleRoad = Constant.DEFAULT_VALUE;
 
     public Location getmLocation() {
