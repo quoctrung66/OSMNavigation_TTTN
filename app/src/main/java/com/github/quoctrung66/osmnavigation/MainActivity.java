@@ -16,6 +16,7 @@ import com.github.quoctrung66.osmnavigation.Drawer.DrawIcon;
 import com.github.quoctrung66.osmnavigation.Drawer.DrawPath;
 import com.github.quoctrung66.osmnavigation.Handler.HandleView;
 import com.github.quoctrung66.osmnavigation.Handler.NominatimAPI.StreetNominatimParser;
+import com.github.quoctrung66.osmnavigation.Handler.OpenstreetmapAPI.MapDataParser;
 import com.github.quoctrung66.osmnavigation.Handler.OpenstreetmapAPI.StreetDetailParser;
 import com.github.quoctrung66.osmnavigation.Handler.ReadFileLocation;
 import com.github.quoctrung66.osmnavigation.Helper.Constant;
@@ -26,6 +27,8 @@ import com.github.quoctrung66.osmnavigation.View.MapViewCustom;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -122,6 +125,12 @@ public class MainActivity extends AppCompatActivity {
             StreetDetailParser streetDetailParser = new StreetDetailParser();
             WayStreet wayStreetDetail = streetDetailParser.StreetDetail(wayStreetCurrent.getId());
             Log.i(TAG + this.getClass().getSimpleName(), wayStreetDetail.toString());
+
+            MapDataParser mapDataParser = new MapDataParser();
+            ArrayList<WayStreet> wayStreetArrayList = mapDataParser.ParserNode(geoPoint, 0.0001);
+            for (int i = 0; i < wayStreetArrayList.size(); i++){
+                Log.i(TAG + this.getClass().getSimpleName(), wayStreetArrayList.get(i).toString());
+            }
 
             Log.i(TAG + this.getClass().getSimpleName(), String.valueOf(System.currentTimeMillis() - time_start));
             Log.i(TAG + this.getClass().getSimpleName(), "-----------------------------------------------------");
