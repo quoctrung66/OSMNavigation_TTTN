@@ -16,8 +16,10 @@ import android.view.View;
 import com.github.quoctrung66.osmnavigation.Drawer.DrawIcon;
 import com.github.quoctrung66.osmnavigation.Drawer.DrawPath;
 import com.github.quoctrung66.osmnavigation.Handler.HandleView;
+import com.github.quoctrung66.osmnavigation.Handler.NominatimAPI.StreetNominatimParser;
 import com.github.quoctrung66.osmnavigation.Handler.ReadFileLocation;
 import com.github.quoctrung66.osmnavigation.Helper.Constant;
+import com.github.quoctrung66.osmnavigation.Model.WayStreet;
 import com.github.quoctrung66.osmnavigation.Service.LocationListenerService;
 import com.github.quoctrung66.osmnavigation.View.MapViewCustom;
 
@@ -112,10 +114,12 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
             drawerFile.updateLocation(geoPoint, 5f, 45f, new int[]{0, 0, 255});
-            ArrayList<GeoPoint> list_temp = new ArrayList<>();
-            list_temp.add(geoPoint);
-            list_temp.add(Constant.HCMUT);
-            drawPathGoal.updateDrawPath(list_temp, Color.RED, 7);
+
+            StreetNominatimParser streetNominatimParser = new StreetNominatimParser();
+            WayStreet wayStreetCurrent = streetNominatimParser.StreetIDParser(geoPoint.getLatitude(), geoPoint.getLongitude(), 16);
+            Log.i(TAG + this.getClass().getSimpleName(), wayStreetCurrent.toString());
+
+
         }
     }
 

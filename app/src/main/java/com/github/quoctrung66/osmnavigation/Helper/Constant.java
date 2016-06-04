@@ -10,4 +10,6 @@ public class Constant {
     static {
         HCMUT = new GeoPoint(10.770432d, 106.658081d);
     }
+
+    public static final String REVERSE_NOMINATIM = "http://nominatim.openstreetmap.org/reverse?format=json&polygon_geojson=1&extratags=1&namedetails=1&addressdetails=0&lat=";
 }
