@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OSMNavigation.iml" filepath="$PROJECT_DIR$/OSMNavigation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OSMNavigation_TTTN.iml" filepath="$PROJECT_DIR$/OSMNavigation_TTTN.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
