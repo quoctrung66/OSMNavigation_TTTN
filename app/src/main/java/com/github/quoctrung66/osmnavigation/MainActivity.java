@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -16,8 +15,13 @@ import android.view.View;
 import com.github.quoctrung66.osmnavigation.Drawer.DrawIcon;
 import com.github.quoctrung66.osmnavigation.Drawer.DrawPath;
 import com.github.quoctrung66.osmnavigation.Handler.HandleView;
+import com.github.quoctrung66.osmnavigation.Handler.NominatimAPI.StreetNominatimParser;
+import com.github.quoctrung66.osmnavigation.Handler.OpenstreetmapAPI.MapDataParser;
+import com.github.quoctrung66.osmnavigation.Handler.OpenstreetmapAPI.StreetDetailParser;
+import com.github.quoctrung66.osmnavigation.Handler.OverpassAPI.OverPassBBoxParser;
 import com.github.quoctrung66.osmnavigation.Handler.ReadFileLocation;
 import com.github.quoctrung66.osmnavigation.Helper.Constant;
+import com.github.quoctrung66.osmnavigation.Model.WayStreet;
 import com.github.quoctrung66.osmnavigation.Service.LocationListenerService;
 import com.github.quoctrung66.osmnavigation.View.MapViewCustom;
 
@@ -26,6 +30,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 
 import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
     //TAG
@@ -100,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private class LocationChanged implements LocationListenerService.LocationChanged {
         @Override
         public void onLocationChanged(Location location) {
-            Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
+//            Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
             drawerGPS.updateLocation(geoPoint, 5f, 45f, new int[]{255, 0, 0});
         }
@@ -109,13 +114,35 @@ public class MainActivity extends AppCompatActivity {
     private class ReadFileListener implements ReadFileLocation.ReadFileListener {
         @Override
         public void onReadLine(Location location) {
+            long time_start = System.currentTimeMillis();
             Log.i(TAG + this.getClass().getSimpleName(), location.getLatitude() + ", "  + location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
             drawerFile.updateLocation(geoPoint, 5f, 45f, new int[]{0, 0, 255});
-            ArrayList<GeoPoint> list_temp = new ArrayList<>();
-            list_temp.add(geoPoint);
-            list_temp.add(Constant.HCMUT);
-            drawPathGoal.updateDrawPath(list_temp, Color.RED, 7);
+
+            StreetNominatimParser streetNominatimParser = new StreetNominatimParser();
+            WayStreet wayStreetCurrent = streetNominatimParser.StreetIDParser(geoPoint.getLatitude(), geoPoint.getLongitude(), 16);
+            Log.i(TAG + this.getClass().getSimpleName(), wayStreetCurrent.toString());
+
+            StreetDetailParser streetDetailParser = new StreetDetailParser();
+            WayStreet wayStreetDetail = streetDetailParser.StreetDetail(wayStreetCurrent.getId());
+            Log.i(TAG + this.getClass().getSimpleName(), wayStreetDetail.toString());
+
+            MapDataParser mapDataParser = new MapDataParser();
+            ArrayList<WayStreet> wayStreetArrayList = mapDataParser.ParserNode(geoPoint, 0.0001);
+            for (int i = 0; i < wayStreetArrayList.size(); i++){
+                Log.i(TAG + this.getClass().getSimpleName() + "OSM", wayStreetArrayList.get(i).toString());
+            }
+
+            OverPassBBoxParser overPassBBoxParser = new OverPassBBoxParser();
+            ArrayList<WayStreet> wayStreetArrayList1 = overPassBBoxParser.getOverpass_BBox(10, geoPoint);
+            for (int i = 0; i < wayStreetArrayList1.size(); i++){
+                Log.i(TAG + this.getClass().getSimpleName() + "OVP", wayStreetArrayList1.get(i).toString());
+            }
+
+
+
+            Log.i(TAG + this.getClass().getSimpleName(), String.valueOf(System.currentTimeMillis() - time_start));
+            Log.i(TAG + this.getClass().getSimpleName(), "-----------------------------------------------------");
         }
     }
 
