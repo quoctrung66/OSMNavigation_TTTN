@@ -7,6 +7,8 @@ import org.osmdroid.util.GeoPoint;
  */
 public class Constant {
     public static final GeoPoint HCMUT;
+    public static final double DEFAULT_VALUE = 0.1;
+
     static {
         HCMUT = new GeoPoint(10.770432d, 106.658081d);
     }
