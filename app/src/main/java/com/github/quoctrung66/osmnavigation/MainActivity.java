@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
             Log.i(TAG + this.getClass().getSimpleName(), String.valueOf(System.currentTimeMillis() - time_start));
             Log.i(TAG + this.getClass().getSimpleName(), "-----------------------------------------------------");
         }
