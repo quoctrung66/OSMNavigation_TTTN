@@ -139,8 +139,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG + this.getClass().getSimpleName() + "OVP", wayStreetArrayList1.get(i).toString());
             }
 
-
-
             Log.i(TAG + this.getClass().getSimpleName(), String.valueOf(System.currentTimeMillis() - time_start));
             Log.i(TAG + this.getClass().getSimpleName(), "-----------------------------------------------------");
         }
