@@ -14,7 +14,6 @@ import org.osmdroid.views.overlay.Overlay;
 public class CustomOverlayICon extends Overlay {
 
     GeoPoint mGeoPoint;
-    private Projection mProject;
     float radius_accuracy;
     float radius_center;
     int[] mRGB;
@@ -28,7 +27,7 @@ public class CustomOverlayICon extends Overlay {
     }
 
     protected void draw(Canvas canvas, MapView mapView, boolean arg2) {
-        mProject = mapView.getProjection();
+        Projection mProject = mapView.getProjection();
         Point point = new Point();
         mProject.toPixels(this.mGeoPoint, point);
         Paint mPaint = new Paint();
