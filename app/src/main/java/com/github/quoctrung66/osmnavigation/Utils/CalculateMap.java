@@ -27,7 +27,9 @@ public class CalculateMap {
 
         return brng;
     }
-
+    /*
+        distance = result[0] meter
+     */
     public static double getDistance(GeoPoint geoPoint1, GeoPoint geoPoint2){
         float[] results = new float[1];
         Location.distanceBetween(geoPoint1.getLatitude(), geoPoint1.getLongitude(), geoPoint2.getLatitude(), geoPoint2.getLongitude(), results);
@@ -41,7 +43,7 @@ public class CalculateMap {
 
             double bearing3 = getAngle(list.get(i+1).getGeoPoint(), geoPoint);
             double bearing4 = getAngle(list.get(i+1).getGeoPoint(), list.get(i).getGeoPoint());
-            if (Math.abs(bearing1-bearing2) <= 90 && Math.abs(bearing3-bearing4) <= 90){
+            if (Math.abs(bearing1-bearing2) <= 100 && Math.abs(bearing3-bearing4) <= 100){
                 return i;
             }
         }

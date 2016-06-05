@@ -7,11 +7,13 @@ import org.osmdroid.util.GeoPoint;
  */
 public class Constant {
     public static final GeoPoint HCMUT;
+    public static final GeoPoint IIG;
     public static final double DEFAULT_VALUE = 0.1;
     public static final double DEFAULT_VALUE_MAX = 10000000000d;
 
     static {
         HCMUT = new GeoPoint(10.770432d, 106.658081d);
+        IIG = new GeoPoint(10.785715,106.6672333);
     }
 
     public static final String REVERSE_NOMINATIM = "http://nominatim.openstreetmap.org/reverse?format=json&polygon_geojson=1&extratags=1&namedetails=1&addressdetails=0&lat=";
