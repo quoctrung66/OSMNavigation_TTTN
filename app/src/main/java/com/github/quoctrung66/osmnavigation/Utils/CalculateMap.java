@@ -53,7 +53,6 @@ public class CalculateMap {
         double TU = -(start.getLongitude() - point.getLongitude())*(end.getLongitude() - start.getLongitude()) - (start.getLatitude() - point.getLatitude())*(end.getLatitude() - start.getLatitude());
         double MAU = (end.getLatitude() - start.getLatitude())*(end.getLatitude() - start.getLatitude()) + (end.getLongitude() - start.getLongitude())*(end.getLongitude() - start.getLongitude());
         double t = TU / MAU;
-        GeoPoint result = new GeoPoint(start.getLatitude() + vectorChiPhuong.getLatitude()*t, start.getLongitude() + vectorChiPhuong.getLongitude()*t);
-        return result;
+        return new GeoPoint(start.getLatitude() + vectorChiPhuong.getLatitude()*t, start.getLongitude() + vectorChiPhuong.getLongitude()*t);
     }
 }
