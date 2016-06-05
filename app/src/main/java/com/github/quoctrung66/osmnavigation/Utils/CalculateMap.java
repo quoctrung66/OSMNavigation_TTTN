@@ -1,5 +1,7 @@
 package com.github.quoctrung66.osmnavigation.Utils;
 
+import android.location.Location;
+
 import org.osmdroid.util.GeoPoint;
 
 /**
@@ -20,5 +22,11 @@ public class CalculateMap {
         brng = brng < 0 ? (180 - Math.abs(brng) + 180) : brng;
 
         return brng;
+    }
+
+    public static double getDistance(GeoPoint geoPoint1, GeoPoint geoPoint2){
+        float[] results = new float[1];
+        Location.distanceBetween(geoPoint1.getLatitude(), geoPoint1.getLongitude(), geoPoint2.getLatitude(), geoPoint2.getLongitude(), results);
+        return results[0];
     }
 }
