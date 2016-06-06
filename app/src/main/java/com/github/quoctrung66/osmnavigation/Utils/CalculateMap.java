@@ -45,7 +45,7 @@ public class CalculateMap {
 
             double bearing3 = getAngle(list.get(i+1).getGeoPoint(), geoPoint);
             double bearing4 = getAngle(list.get(i+1).getGeoPoint(), list.get(i).getGeoPoint());
-            Log.i("MainActivity bearing", bearing1 + ", " + bearing2 + ", " + bearing3 + ", " + bearing4);
+//            Log.i("MainActivity bearing", bearing1 + ", " + bearing2 + ", " + bearing3 + ", " + bearing4);
             double abs1 = Math.abs(bearing1-bearing2);
             double abs2 = Math.abs(bearing3-bearing4);
             abs1 = abs1 <= 180 ? abs1 : 360 - abs1;
