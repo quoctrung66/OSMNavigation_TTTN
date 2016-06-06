@@ -1,7 +1,9 @@
 package com.github.quoctrung66.osmnavigation.Utils;
 
 import android.location.Location;
+import android.util.Log;
 
+import com.github.quoctrung66.osmnavigation.MainActivity;
 import com.github.quoctrung66.osmnavigation.Model.NodeStreet;
 
 import org.osmdroid.util.GeoPoint;
@@ -27,7 +29,9 @@ public class CalculateMap {
 
         return brng;
     }
-
+    /*
+        distance = result[0] meter
+     */
     public static double getDistance(GeoPoint geoPoint1, GeoPoint geoPoint2){
         float[] results = new float[1];
         Location.distanceBetween(geoPoint1.getLatitude(), geoPoint1.getLongitude(), geoPoint2.getLatitude(), geoPoint2.getLongitude(), results);
@@ -41,7 +45,12 @@ public class CalculateMap {
 
             double bearing3 = getAngle(list.get(i+1).getGeoPoint(), geoPoint);
             double bearing4 = getAngle(list.get(i+1).getGeoPoint(), list.get(i).getGeoPoint());
-            if (Math.abs(bearing1-bearing2) <= 90 && Math.abs(bearing3-bearing4) <= 90){
+//            Log.i("MainActivity bearing", bearing1 + ", " + bearing2 + ", " + bearing3 + ", " + bearing4);
+            double abs1 = Math.abs(bearing1-bearing2);
+            double abs2 = Math.abs(bearing3-bearing4);
+            abs1 = abs1 <= 180 ? abs1 : 360 - abs1;
+            abs2 = abs2 <= 180 ? abs2 : 360 - abs2;
+            if (abs1 <= 95 && abs2 <= 95){
                 return i;
             }
         }
