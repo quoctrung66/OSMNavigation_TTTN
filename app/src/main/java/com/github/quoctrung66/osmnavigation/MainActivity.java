@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     //TAG
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private MapViewCustom mapView;
+
     //LocationService
     private Intent locationService;
     private ServiceConnection serviceConnection;
@@ -50,16 +52,16 @@ public class MainActivity extends AppCompatActivity {
     private ReadFileLocation readfile;
 
     //Drawer locationGPS
-    DrawIcon drawerGPS;
-    DrawIcon drawerFile;
-    DrawPath drawPathGoal;
-    DrawPath drawPathPrevious;
-    DrawPath drawPathGoal_old;
+    private DrawIcon drawerGPS;
+    private DrawIcon drawerFile;
+    private DrawPath drawPathGoal;
+    private DrawPath drawPathPrevious;
+    private DrawPath drawPathGoal_old;
 
     //Handle Case
-    ArrayList<MyLocation> locationHistory;
-    MyLocation locationCurrent;
-    GeoPoint mGeoPointGoal = null;
+    private ArrayList<MyLocation> locationHistory;
+    private MyLocation locationCurrent;
+    private GeoPoint mGeoPointGoal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         new HandleView(MainActivity.this).inicheck();
 
         //Setting map
-        MapViewCustom mapView = (MapViewCustom) findViewById(R.id.map);
+        mapView = (MapViewCustom) findViewById(R.id.map);
         assert mapView != null;
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         mGeoPointGoal = Constant.IIG;
         //Map Controller
         IMapController mapController = mapView.getController();
-        mapController.setZoom(17);
+        mapController.setZoom(18);
         mapController.animateTo(Constant.HCMUT);
 
         //Drawer
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Location File
         ReadFileListener readFileListener = new ReadFileListener();
-        readfile = new ReadFileLocation(MainActivity.this, "TU HCMUT VE NHA.txt");
+        readfile = new ReadFileLocation(MainActivity.this, "TU HCMUT DEN IIG.txt");
         readfile.addReadFileListener(readFileListener);
         readfile.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -136,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG + " GeoPoint", location.getLatitude() + ", "  + location.getLongitude());
             GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
             drawerFile.updateLocation(geoPoint, 5f, 45f, new int[]{0, 0, 255});
+
+            mapView.getController().animateTo(geoPoint);
 
             locationCurrent = new MyLocation();
             locationCurrent.setmLocation(location);
@@ -162,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     locationCurrent.setmAngleRoad(locationHistory.get(0).getmAngleRoad());
                 }
-                drawPathPrevious.updateDrawPath(road_previous.mRouteHigh, Color.GREEN, 7);
+//                drawPathPrevious.updateDrawPath(road_previous.mRouteHigh, Color.GREEN, 7);
             }
 
             if (mGeoPointGoal != null){
