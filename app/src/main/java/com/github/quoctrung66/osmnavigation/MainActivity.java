@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private MapViewCustom mapView;
 
     //LocationService
+
+
+
     private Intent locationService;
     private ServiceConnection serviceConnection;
     private LocationListenerService locationListenerService;
